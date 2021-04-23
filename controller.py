@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from whatkit import playonyt
 import time, pyautogui
-path = r'C:\Program Files (x86)\chrome_driver\90\chromedriver.exe'
+path = 'chromedriver.exe'
 path1 = r'C:\Program Files (x86)\chrome_driver\edge90\msedgedriver.exe'
 options = Options()
 options.add_argument('start_maximized')
@@ -90,8 +90,9 @@ def full_screen(driver = driver):
 	if status == "failed":
 		driver.fullscreen_window()
 def Quit(driver = driver):
+    driver.close()
     driver.quit()
-
+    quit()
 if __name__ =='__main__':
     YTvideo("play tech with tim")
     time.sleep(30)
