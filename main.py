@@ -12,7 +12,7 @@ class TelegramPcController():
     API_KEY = file_api.read()
     file_api.close()
     helptext = "You can try\n\n1)Play Sweet but psycho\n2)Change resolution to 1080p\n3)Pause Video\n4)Quit\n5)Shut down\n6)Exit fullscreen"
-    helptext = helptext + "\n7)Volume Up\n8)Fast forward to 60%\n"
+    helptext = helptext + "\n7)Volume Up\n"
 
     def start(self, update, content):
         # update.message.reply_text(self.helptext)
@@ -24,14 +24,21 @@ class TelegramPcController():
         self.InlineButton(update, content)
 
     def InlineButton(self, update, content):
-        button_text = ["Pause", "Play", "Volume Up", "Volume Down", "Shutdown", "Cancel Shutdown", "Quit"]
-        button_reply = ["pause", "play", "volume up", "volume down", "shutdown", "cancel shutdown", "quit"]
+        button_text = ["Pause", "Play", "Volume Up", "Volume Down", "Mute", "Fast Forward", "Back Forward", "Fullscreen", "Hotkeys","Shutdown", "Cancel Shutdown", "Quit"]
+        button_reply = ["pause", "play", "volume up", "volume down", "mute","fast forward", "back forward", "fullscreen", "hotkeys", "shutdown", "cancel shutdown", "quit"]
         buttons = []
         for i in range(len(button_text)):
             btn = [InlineKeyboardButton(button_text[i], callback_data=button_reply[i])]
             buttons.append(btn)
         content.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(buttons), text="Welcome")
-
+    def InlineButton_Hotkeys(self, update, content):
+        button_text = ["Multitask", "Switch Tabs", "Next Workpace", "Previous Workspace", "Close Window"]
+        button_reply = ["ctrl+alt+tab", "ctrl+tab", "ctrl+win+right", "ctrl+win+left", "alt+f4"]
+        buttons = []
+        for i in range(len(button_text)):
+            btn = [InlineKeyboardButton(button_text[i], callback_data=button_reply[i])]
+            buttons.append(btn)
+        content.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(buttons), text="Welcome")
     def Query_Handler(self, update, content):
         try:
             self.text = update.callback_query.data
@@ -57,7 +64,7 @@ class TelegramPcController():
             sts = ShutDown()
             update.message.reply_text(sts)
         elif "quit" == text:
-            quit()
+            exit()
         elif ("play") == text:
             pyautogui.press("space")
         elif "volume" in text:
@@ -69,16 +76,16 @@ class TelegramPcController():
                 pyautogui.press('volumeup')
                 pyautogui.press('volumeup')
                 pyautogui.press('volumeup')
-        elif ("fast forward") in text:
-            forward_to(text)
-        elif ("back forward") in text:
-            forward_to(text)
+        elif ("fast forward") == text:
+            pyautogui.press("right")
+        elif ("back forward") == text:
+            pyautogui.press("left")
         elif ("pause") == text:
             pyautogui.press("space")
         elif ("play" in text) and ("play" != text):
             YTvideo(text)
-        elif "change resolution" in text:
-            pass
+        elif "mute" == text:
+            pyautogui.press("volumemute")
         elif ("maximize" and "window") in text:
             MaxWindow()
         elif ("fullscreen" in text ) or ("full screen"in text):
@@ -89,12 +96,24 @@ class TelegramPcController():
         elif ("stop" and "shutdown") in text:
             CancelShutDown()
             update.message.reply_text("Okay, ShutDown cancelled!")
+        elif "ctrl+tab" == text:
+            pyautogui.hotkey("ctrl", "tab")
+        elif "ctrl+alt+tab" == text:
+            pyautogui.hotkey("ctrl", "alt", "tab")
+        elif "alt+f4" == text:
+            pyautogui.hotkey("alt", "f4")
+        elif "ctrl+win+right" == text:
+            pyautogui.hotkey("ctrl", "win", "right")
+        elif "ctrl+win+left" == text:
+            pyautogui.hotkey("ctrl", "win", "left")
+        elif "hotkeys" == text:
+            self.InlineButton_Hotkeys(update, content)
         else:
             update.message.reply_text("Sorry, I can't do that!") 
     
     def message_center(self, update, content):
         self.text = str(update.message.text).lower()
-        self.CommandCenter()
+        self.CommandCenter(update, content)
 
     def main(self, key = API_KEY):
         updater = Updater(key, use_context=True)
