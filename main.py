@@ -3,23 +3,29 @@ import os, pyautogui
 from controller import *
 from telegram import *
 
-class TelegramPcController():
+# Dependencies
+# pip install telegram
+# pip install python-telegram-bot
 
-    API_KEY = '1743814674:AAGTkcpXmjnGGGANRegfucaGjPfM7WCDrlA'
+class TelegramPcController():
+    file_api = open("api.txt", "r")
+    API_KEY = file_api.read()
+    file_api.close()
     helptext = "You can try\n\n1)Play Sweet but psycho\n2)Change resolution to 1080p\n3)Pause Video\n4)Quit\n5)Shut down\n6)Exit fullscreen"
     helptext = helptext + "\n7)Volume Up\n8)Fast forward to 60%\n"
 
     def start(self, update, content):
-        update.message.reply_text(self.helptext)
+        # update.message.reply_text(self.helptext)
         self.InlineButton(update, content)
-        update.message.reply_text('Type something...')
+        # update.message.reply_text('Type something...')
 
     def help1(self, update, content):
         update.message.reply_text(self.helptext)
+        self.InlineButton(update, content)
 
     def InlineButton(self, update, content):
-        button_text = ["Pause", "Play", "Shutdown", "Cancel Shutdown", "Quit"]
-        button_reply = ["pause", "play", "shutdown", "cancel shutdown", "quit"]
+        button_text = ["Pause", "Play", "Volume Up", "Volume Down", "Shutdown", "Cancel Shutdown", "Quit"]
+        button_reply = ["pause", "play", "volume up", "volume down", "shutdown", "cancel shutdown", "quit"]
         buttons = []
         for i in range(len(button_text)):
             btn = [InlineKeyboardButton(button_text[i], callback_data=button_reply[i])]
