@@ -34,7 +34,9 @@ def YTvideo(song):
     song = (song.lower()).replace("play","")
     link = playonyt(song)
     web.open(link)
-
+    time.sleep(10)
+    # print("hi")
+    pyautogui.press("f")
 
 
 if __name__ =='__main__':

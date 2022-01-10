@@ -32,8 +32,8 @@ class TelegramPcController():
             buttons.append(btn)
         content.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(buttons), text="Welcome")
     def InlineButton_Hotkeys(self, update, content):
-        button_text = ["Multitask", "Switch Tabs", "Next Workpace", "Previous Workspace", "Close Window"]
-        button_reply = ["ctrl+alt+tab", "ctrl+tab", "ctrl+win+right", "ctrl+win+left", "alt+f4"]
+        button_text = ["Multitask", "Switch Tabs", "Next Workpace", "Previous Workspace", "Close Tab", "Close Window"]
+        button_reply = ["ctrl+alt+tab", "ctrl+tab", "ctrl+win+right", "ctrl+win+left", "ctrl+f4", "alt+f4"]
         buttons = []
         for i in range(len(button_text)):
             btn = [InlineKeyboardButton(button_text[i], callback_data=button_reply[i])]
@@ -64,7 +64,7 @@ class TelegramPcController():
             sts = ShutDown()
             update.message.reply_text(sts)
         elif "quit" == text:
-            exit()
+            quit()
         elif ("play") == text:
             pyautogui.press("space")
         elif "volume" in text:
@@ -102,6 +102,8 @@ class TelegramPcController():
             pyautogui.hotkey("ctrl", "alt", "tab")
         elif "alt+f4" == text:
             pyautogui.hotkey("alt", "f4")
+        elif "ctrl+f4" == text:
+            pyautogui.hotkey("ctrl", "f4")
         elif "ctrl+win+right" == text:
             pyautogui.hotkey("ctrl", "win", "right")
         elif "ctrl+win+left" == text:
