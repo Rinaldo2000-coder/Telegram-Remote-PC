@@ -106,12 +106,12 @@ class TelegramPcController():
         elif "volume" in text:
             if "down" in text:
                 pyautogui.press('volumedown')
-                pyautogui.press('volumedown')
-                pyautogui.press('volumedown')
+                #pyautogui.press('volumedown')
+                # pyautogui.press('volumedown')
             elif "up" in text:
                 pyautogui.press('volumeup')
-                pyautogui.press('volumeup')
-                pyautogui.press('volumeup')
+                # pyautogui.press('volumeup')
+                # pyautogui.press('volumeup')
         elif ("fast forward") == text:
             pyautogui.press("right")
         elif ("back forward") == text:

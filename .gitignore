@@ -1,5 +1,7 @@
 __pycache__/
+assets/
 output/
 api.txt
 home.txt
 api-backup.txt
+version.py
