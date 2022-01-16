@@ -19,6 +19,7 @@ class TelegramPcController():
     
     def __init__(self):
         self.multitask_btn = "mult"
+        self.main()
 
     def build_menu(self, buttons, n_cols, header_buttons=None, footer_buttons=None):
         menu = [buttons[i:i + n_cols] for i in range(0, len(buttons), n_cols)]
@@ -45,7 +46,7 @@ class TelegramPcController():
         self.InlineButton(update, content)
 
     def InlineButton(self, update, content):
-        button_text = [["Pause", "Play"], ["Volume Down", "Mute","Volume Up"], ["Back Forward", "Fast Forward"], "Fullscreen", "Hotkeys", "Quit", ["Shutdown", "Cancel Shutdown"]]
+        button_text = [["Pause", "Play"], ["Volume Down", "Mute","Volume Up"], ["Back Forward", "Fast Forward"], "Fullscreen", "Quit", ["Shutdown", "Cancel Shutdown"]]
         button_list = []
         for each in button_text:
             button_row = []
@@ -96,8 +97,8 @@ class TelegramPcController():
     def CommandCenter(self, update, content):
         text = self.text
         if ("shutdown" or "shut down") == text:
-            text = str(update.message.text).lower()
-            sts = ShutDown()
+            # text = str(update.message.text).lower()
+            sts = self.ShutDown()
             update.message.reply_text(sts)
         elif "quit" == text:
             quit()
@@ -106,7 +107,7 @@ class TelegramPcController():
         elif "volume" in text:
             if "down" in text:
                 pyautogui.press('volumedown')
-                #pyautogui.press('volumedown')
+                # pyautogui.press('volumedown')
                 # pyautogui.press('volumedown')
             elif "up" in text:
                 pyautogui.press('volumeup')
@@ -127,7 +128,7 @@ class TelegramPcController():
         elif ("fullscreen" in text ) or ("full screen"in text):
             pyautogui.press("f")
         elif ("cancel" and "shutdown") in text:
-            CancelShutDown()
+            self.CancelShutDown()
             update.message.reply_text("Okay, ShutDown cancelled!")
         elif ("stop" and "shutdown") in text:
             CancelShutDown()
@@ -179,7 +180,8 @@ class TelegramPcController():
         dp.add_handler(CallbackQueryHandler(self.Query_Handler))
         updater.start_polling()
         updater.idle()
+
 if __name__ == '__main__':
-    TelegramPcController().main()
+    TelegramPcController()
 
 
