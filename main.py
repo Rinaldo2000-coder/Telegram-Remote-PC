@@ -17,6 +17,9 @@ class TelegramPcController():
     helptext = "You can try\n\n1)Play Sweet but psycho\n2)cd music\n3)pwd\n4)open music.mp4\n5)ls\n"
     # helptext = helptext + "\n7)Volume Up\n"
     
+    def __init__(self):
+        self.multitask_btn = "mult"
+
     def build_menu(self, buttons, n_cols, header_buttons=None, footer_buttons=None):
         menu = [buttons[i:i + n_cols] for i in range(0, len(buttons), n_cols)]
         if header_buttons:
@@ -54,23 +57,23 @@ class TelegramPcController():
             button_list.append(button_row)
         reply_markup=InlineKeyboardMarkup(button_list) #n_cols = 1 is for single column and mutliple rows
         #bot1.sendMessage(chat_id=update.message.chat_id, text='Choose from the following',reply_markup=reply_markup)
-        update.message.reply_text("Choose from the following", reply_markup = reply_markup)
+        update.message.reply_text("Options", reply_markup = reply_markup)
         # content.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(buttons), text="Welcome")
     def InlineButton_Hotkeys(self, update, content):
-        button_text = ["Multitask", "Switch Tabs", ["Next Workpace", "Previous Workspace"], "Close Tab", "Close Window"]
-        button_reply = ["ctrl+alt+tab", "ctrl+tab", ["ctrl+win+right", "ctrl+win+left"], "ctrl+f4", "alt+f4"]
+        button_text = [["⬅️", "Multitask", "➡️"], "Switch Tabs", ["Previous Workpace", "Next Workspace"], "Close Tab", "Close Window"]
+        button_reply = [["back forward", "multitask", "fast forward"], "ctrl+tab", ["ctrl+win+left", "ctrl+win+right"], "ctrl+f4", "alt+f4"]
         button_list = []
         for n, each in enumerate(button_text):
             button_row = []
             if type(each) == list:
                 for n1, each1 in enumerate(each):
-                    button_row.append(InlineKeyboardButton(each1, callback_data = button_reply[n1]))
+                    button_row.append(InlineKeyboardButton(each1, callback_data = button_reply[n][n1]))
             else:
                 button_row.append(InlineKeyboardButton(each, callback_data = button_reply[n]))
             button_list.append(button_row)
         reply_markup=InlineKeyboardMarkup(button_list) #n_cols = 1 is for single column and mutliple rows
         #bot1.sendMessage(chat_id=update.message.chat_id, text='Choose from the following',reply_markup=reply_markup)
-        update.message.reply_text("Choose from the following", reply_markup = reply_markup)
+        update.message.reply_text("Control buttons", reply_markup = reply_markup)
     
     def Query_Handler(self, update, content):
         try:
@@ -131,8 +134,15 @@ class TelegramPcController():
             update.message.reply_text("Okay, ShutDown cancelled!")
         elif "ctrl+tab" == text:
             pyautogui.hotkey("ctrl", "tab")
-        elif "ctrl+alt+tab" == text:
-            pyautogui.hotkey("ctrl", "alt", "tab")
+        elif "multitask" == text:
+            if self.multitask_btn == "mult":
+                pyautogui.hotkey("ctrl", "alt", "tab")
+                self.multitask_btn = "selt"
+            else:
+                pyautogui.press("space")
+                self.multitask_btn = "mult"
+        # elif "ctrl+alt+tab" == text:
+        #     pyautogui.hotkey("ctrl", "alt", "tab")
         elif "alt+f4" == text:
             pyautogui.hotkey("alt", "f4")
         elif "ctrl+f4" == text:
