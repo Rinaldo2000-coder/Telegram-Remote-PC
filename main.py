@@ -2,17 +2,20 @@ from telegram.ext import *
 import os, pyautogui
 from controller import *
 from telegram import *
-
+import controller
 # Dependencies
 # pip install telegram
 # pip install python-telegram-bot
+
+# change to home directory
+controller.find_home_loc()
 
 class TelegramPcController():
     file_api = open("api.txt", "r")
     API_KEY = file_api.read()
     file_api.close()
-    helptext = "You can try\n\n1)Play Sweet but psycho\n2)Change resolution to 1080p\n3)Pause Video\n4)Quit\n5)Shut down\n6)Exit fullscreen"
-    helptext = helptext + "\n7)Volume Up\n"
+    helptext = "You can try\n\n1)Play Sweet but psycho\n2)cd music\n3)pwd\n4)open music.mp4\n5)ls\n"
+    # helptext = helptext + "\n7)Volume Up\n"
 
     def start(self, update, content):
         # update.message.reply_text(self.helptext)
@@ -111,8 +114,17 @@ class TelegramPcController():
         elif "hotkeys" == text:
             self.InlineButton_Hotkeys(update, content)
         else:
-            update.message.reply_text("Sorry, I can't do that!") 
-    
+            reply_controller = controller.MainController(text)
+            try:
+                return_text = reply_controller.return_text
+            except Exception as e:
+                return_text = ""
+            if return_text == 0:
+                update.message.reply_text("Sorry, I can't do that!") 
+            elif len(return_text) > 1:
+                update.message.reply_text(return_text)
+            else:
+                pass
     def message_center(self, update, content):
         self.text = str(update.message.text).lower()
         self.CommandCenter(update, content)
