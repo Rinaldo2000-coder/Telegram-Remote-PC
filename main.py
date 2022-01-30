@@ -7,13 +7,14 @@ import controller
 # pip install telegram
 # pip install python-telegram-bot
 
-# change to home directory
-controller.find_home_loc()
 
 class TelegramPcController():
     file_api = open("api.txt", "r")
     API_KEY = file_api.read()
     file_api.close()
+    # change to home directory
+    controller.find_home_loc()
+
     helptext = "You can try\n\n1)Play Sweet but psycho\n2)cd music\n3)pwd\n4)open music.mp4\n5)ls\n"
     # helptext = helptext + "\n7)Volume Up\n"
     
